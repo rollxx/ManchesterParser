@@ -77,7 +77,8 @@ restriction returns [$value]
     | (SELF_LABEL {\$value = new Erfurt_Owl_Structured_ObjectPropertyRestriction_ObjectHasSelf($o.value);})
     | (MIN_LABEL nni=nonNegativeInteger p=primary? {\$value = new Erfurt_Owl_Structured_ObjectPropertyRestriction_ObjectMinCardinality($o.value, $nni.value, isset(\$p)?$p.value:null);})
     | (MAX_LABEL nni=nonNegativeInteger p=primary? {\$value = new Erfurt_Owl_Structured_ObjectPropertyRestriction_ObjectMaxCardinality($o.value, $nni.value, isset(\$p)?$p.value:null);})
-    | (EXACTLY_LABEL nni=nonNegativeInteger p=primary? {\$value = new Erfurt_Owl_Structured_ObjectPropertyRestriction_ObjectExactCardinality($o.value, $nni.value, isset(\$p)?$p.value:null);})
+    | (EXACTLY_LABEL nonNegativeInteger primary)=> (EXACTLY_LABEL nni=nonNegativeInteger p=primary? {\$value = new Erfurt_Owl_Structured_ObjectPropertyRestriction_ObjectExactCardinality($o.value, $nni.value, isset(\$p)?$p.value:null);})
+    | (EXACTLY_LABEL nni=nonNegativeInteger {\$value = new Erfurt_Owl_Structured_ObjectPropertyRestriction_ObjectExactCardinality($o.value, $nni.value, isset(\$p)?$p.value:null);})
   )
   | dp=dataPropertyExpression(
     (SOME_LABEL d=dataRange {\$value = new Erfurt_Owl_Structured_DataPropertyRestriction_DataSomeValuesFrom($dp.value, $d.value);})
@@ -85,7 +86,8 @@ restriction returns [$value]
   | (VALUE_LABEL l=literal{\$value = new Erfurt_Owl_Structured_DataPropertyRestriction_DataHasValue($dp.value, $l.value);})
   | (MIN_LABEL nni=nonNegativeInteger d=dataRange? {\$value = new Erfurt_Owl_Structured_DataPropertyRestriction_DataMinCardinality($dp.value, $nni.value, isset(\$d)?$d.value:null);})
   | (MAX_LABEL nni=nonNegativeInteger d=dataRange? {\$value = new Erfurt_Owl_Structured_DataPropertyRestriction_DataMaxCardinality($dp.value, $nni.value, isset(\$d)?$d.value:null);})
-  | (EXACTLY_LABEL nni=nonNegativeInteger d=dataRange? {\$value = new Erfurt_Owl_Structured_DataPropertyRestriction_DataExactCardinality($dp.value, $nni.value, isset(\$d)?$d.value:null);})
+  | (EXACTLY_LABEL nonNegativeInteger dataRange)=> (EXACTLY_LABEL nni=nonNegativeInteger dataRange {\$value = new Erfurt_Owl_Structured_DataPropertyRestriction_DataExactCardinality($dp.value, $nni.value, $d.value);})
+  | (EXACTLY_LABEL nni=nonNegativeInteger {\$value = new Erfurt_Owl_Structured_DataPropertyRestriction_DataExactCardinality($dp.value, $nni.value);})
         )
   ;
 

@@ -3,14 +3,14 @@ grammar StrippedMosNew;
 options {
   language  = Php;
   backtrack = true;
-  // memoize   = true;
+  memoize   = true;
 }
 
 import StrippedMosTokenizerNew;
 
-parse returns [$value]
-  : l=description {\$value = $l.value;}
-  ;
+// parse returns [$value]
+//   : l=description {\$value = $l.value;}
+//   ;
 
 description returns [$value]
 @init{
@@ -219,7 +219,7 @@ objectPropertyIRI returns [$value]
 dataTypeRestriction returns [$value]
   :
   dataType {\$value = new Erfurt_Owl_Structured_DataRange_DatatypeRestriction($dataType.value);} OPEN_SQUARE_BRACE
-        ( f=facet r=restrictionValue {\$value -> addRestriction($f.value, $r.value);})+
+        ( f=facet r=restrictionValue {\$value -> addRestriction($f.value, $r.value);} COMMA?)+
   CLOSE_SQUARE_BRACE
   ;
 
@@ -255,7 +255,7 @@ dataConjunction returns [$value]
 // full mos
 
 annotationAnnotatedList returns [$value]
-	:	(annotations)? annotation (COMMA (annotations)? annotation)*
+	:	annotations? annotation (COMMA annotations? annotation)*
 	;
 
 annotation returns [$value]
@@ -271,178 +271,178 @@ annotations returns [$value]
 	: (ANNOTATIONS_LABEL a=annotationAnnotatedList {\$value = $a.value;})?
 	;
 
-descriptionAnnotatedList returns [$value]
-	:	annotations? description {\$value = $description.value;} (COMMA descriptionAnnotatedList)*
-	;
-
-description2List returns [$value]
-	:	d=description COMMA dl=descriptionList {\$value = new Erfurt_Owl_Structured_OwlList($d.value); \$value->addAllElements($dl.value);}
-	;
-
+// descriptionAnnotatedList returns [$value]
+//  	:	annotations? description (COMMA annotations? description)*
+//  	;
+ 
+//description2List returns [$value]
+// 	:	d=description COMMA dl=descriptionList {\$value = new Erfurt_Owl_Structured_OwlList($d.value); \$value->addAllElements($dl.value);}
+// 	;
+// 
 descriptionList returns [$value]
-	:	d1=description {\$value = new Erfurt_Owl_Structured_OwlList($d1.value);} (COMMA d2=description {\$value->addElement($d2.value);})*
-	;
-
-classFrame returns [$value]
-	:	CLASS_LABEL c=classIRI
-	(	ANNOTATIONS_LABEL annotationAnnotatedList
-		|	SUBCLASS_OF_LABEL s=descriptionAnnotatedList {\$value = new Erfurt_Owl_Structured_ClassAxiom_SubClassOf($c.value, $s.value);}
-		|	EQUIVALENT_TO_LABEL e=descriptionAnnotatedList {\$value = new Erfurt_Owl_Structured_ClassAxiom_EquivalentClasses($c.value, $e.value);}
-		|	DISJOINT_WITH_LABEL d=descriptionAnnotatedList
-		|	DISJOINT_UNION_OF_LABEL annotations description2List
-	)*
-	//TODO owl2 primer error?
-	(	HAS_KEY_LABEL annotations?
-			((objectPropertyExpression)=>objectPropertyExpression | dataPropertyExpression)+)?
-	;
-
-objectPropertyFrame
-	:	OBJECT_PROPERTY_LABEL objectPropertyIRI
-	(	ANNOTATIONS_LABEL annotationAnnotatedList
-		|	RANGE_LABEL descriptionAnnotatedList
-		|	CHARACTERISTICS_LABEL objectPropertyCharacteristicAnnotatedList
-		|	SUB_PROPERTY_OF_LABEL objectPropertyExpressionAnnotatedList
-		|	EQUIVALENT_TO_LABEL objectPropertyExpressionAnnotatedList
-		|	DISJOINT_WITH_LABEL objectPropertyExpressionAnnotatedList
-		|	INVERSE_OF_LABEL objectPropertyExpressionAnnotatedList
-		|	SUB_PROPERTY_CHAIN_LABEL annotations objectPropertyExpression (O_LABEL objectPropertyExpression)+
-		)*
-	;
+ 	:	d1=description {\$value = new Erfurt_Owl_Structured_OwlList($d1.value);} (COMMA d2=description {\$value->addElement($d2.value);})*
+ 	;
+ 
+// classFrame returns [$value]
+// 	:	CLASS_LABEL c=classIRI
+// 	(	ANNOTATIONS_LABEL annotationAnnotatedList
+// 		|	SUBCLASS_OF_LABEL s=descriptionAnnotatedList {\$value = new Erfurt_Owl_Structured_ClassAxiom_SubClassOf($c.value, $s.value);}
+// 		|	EQUIVALENT_TO_LABEL e=descriptionAnnotatedList {\$value = new Erfurt_Owl_Structured_ClassAxiom_EquivalentClasses($c.value, $e.value);}
+// 		|	DISJOINT_WITH_LABEL d=descriptionAnnotatedList
+// 		|	DISJOINT_UNION_OF_LABEL annotations description2List
+// 	)*
+// 	//TODO owl2 primer error?
+// 	(	HAS_KEY_LABEL annotations?
+// 			(objectPropertyExpression | dataPropertyExpression)+)?
+// 	;
+// 
+// objectPropertyFrame
+// 	:	OBJECT_PROPERTY_LABEL objectPropertyIRI
+// 	(	ANNOTATIONS_LABEL annotationAnnotatedList
+// 		|	RANGE_LABEL descriptionAnnotatedList
+// 		|	CHARACTERISTICS_LABEL objectPropertyCharacteristicAnnotatedList
+// 		|	SUB_PROPERTY_OF_LABEL objectPropertyExpressionAnnotatedList
+// 		|	EQUIVALENT_TO_LABEL objectPropertyExpressionAnnotatedList
+// 		|	DISJOINT_WITH_LABEL objectPropertyExpressionAnnotatedList
+// 		|	INVERSE_OF_LABEL objectPropertyExpressionAnnotatedList
+// 		|	SUB_PROPERTY_CHAIN_LABEL annotations objectPropertyExpression (O_LABEL objectPropertyExpression)+
+// 		)*
+// 	;
 
 objectPropertyCharacteristicAnnotatedList
-	:	annotations? OBJECT_PROPERTY_CHARACTERISTIC (COMMA objectPropertyCharacteristicAnnotatedList)*
-	;
+	:	annotations? OBJECT_PROPERTY_CHARACTERISTIC (COMMA annotations? OBJECT_PROPERTY_CHARACTERISTIC)*
+ 	;
 
 objectPropertyExpressionAnnotatedList
-	:	annotations? objectPropertyExpression (COMMA objectPropertyExpressionAnnotatedList)*
-	;
-
-dataPropertyFrame
-    : DATA_PROPERTY_LABEL  dataPropertyIRI
-    (	ANNOTATIONS_LABEL annotationAnnotatedList
-    |	DOMAIN_LABEL  descriptionAnnotatedList
-    |	RANGE_LABEL  dataRangeAnnotatedList
-    |	CHARACTERISTICS_LABEL  annotations FUNCTIONAL_LABEL
-    |	SUB_PROPERTY_OF_LABEL  dataPropertyExpressionAnnotatedList
-    |	EQUIVALENT_TO_LABEL  dataPropertyExpressionAnnotatedList
-    |	DISJOINT_WITH_LABEL  dataPropertyExpressionAnnotatedList
-    )*
-    ;
-
-dataRangeAnnotatedList
-	:	annotations? dataRange (COMMA dataRangeAnnotatedList)*
-	;
-
+ 	:	annotations? objectPropertyExpression (COMMA annotations? objectPropertyExpression)*
+ 	;
+ 
+// dataPropertyFrame
+//     : DATA_PROPERTY_LABEL  dataPropertyIRI
+//     (	ANNOTATIONS_LABEL annotationAnnotatedList
+//     |	DOMAIN_LABEL  descriptionAnnotatedList
+//     |	RANGE_LABEL  dataRangeAnnotatedList
+//     |	CHARACTERISTICS_LABEL  annotations FUNCTIONAL_LABEL
+//     |	SUB_PROPERTY_OF_LABEL  dataPropertyExpressionAnnotatedList
+//     |	EQUIVALENT_TO_LABEL  dataPropertyExpressionAnnotatedList
+//     |	DISJOINT_WITH_LABEL  dataPropertyExpressionAnnotatedList
+//     )*
+//     ;
+// 
+// dataRangeAnnotatedList
+//  	:	annotations? dataRange (COMMA dataRangeAnnotatedList)*
+//  	;
+ 
 dataPropertyExpressionAnnotatedList
-	:	annotations? dataPropertyExpression (COMMA dataPropertyExpressionAnnotatedList)*
-	;
-
+  	:	annotations? dataPropertyExpression (COMMA annotations? dataPropertyExpression)*
+  	;
+ 
 annotationPropertyFrame
-	:	ANNOTATION_PROPERTY_LABEL annotationPropertyIRI
-	(	ANNOTATIONS_LABEL  annotationAnnotatedList )*
-	|	DOMAIN_LABEL  iriAnnotatedList
-	|	RANGE_LABEL  iriAnnotatedList
-	|	SUB_PROPERTY_OF_LABEL annotationPropertyIRIAnnotatedList
-	;
-	
+ 	:	ANNOTATION_PROPERTY_LABEL annotationPropertyIRI
+ 	(	ANNOTATIONS_LABEL  annotationAnnotatedList )*
+ 	|	DOMAIN_LABEL  iriAnnotatedList
+ 	|	RANGE_LABEL  iriAnnotatedList
+ 	|	SUB_PROPERTY_OF_LABEL annotationPropertyIRIAnnotatedList
+ 	;
+ 	
 iriAnnotatedList
-	:	annotations? iri (COMMA iriAnnotatedList)*
-	;
-
+ 	:	annotations? iri (COMMA annotations? iri)*
+ 	;
+ 
 annotationPropertyIRI returns [$value]
 	:	iri {\$value = $iri.value;}
-	;
-
+ 	;
+ 
 annotationPropertyIRIAnnotatedList
-	:	annotations? annotationPropertyIRI (COMMA annotationPropertyIRIAnnotatedList)*
-	;
-
-individualFrame returns [$value]
-	:	INDIVIDUAL_LABEL  i=individual
-	(	ANNOTATIONS_LABEL  a=annotationAnnotatedList {\$value = new Erfurt_Owl_Structured_Axiom_AnnotationAxiom_AnnotationAssertion($i.value, $a.value);}
-		|	TYPES_LABEL  d=descriptionAnnotatedList {\$value = new Erfurt_Owl_Structured_Axiom_Assertion_ClassAssertion($i.value, $d.value);}
-		|	FACTS_LABEL  f=factAnnotatedList {\$value = new Erfurt_Owl_Structured_Axiom_Assertion_ObjectPropertyAssertion($i.value, $f.value);}
-		|	SAME_AS_LABEL  ial=individualAnnotatedList {\$value = new Erfurt_Owl_Structured_Axiom_Assertion_SameIndividual($i.value, $ial.value);}
-		|	DIFFERENET_FROM_LABEL ial1=individualAnnotatedList {\$value = new Erfurt_Owl_Structured_Axiom_Assertion_DifferentIndividuals($i.value, $ial.value);}
-	)*
-	;
+ 	:	annotations? annotationPropertyIRI (COMMA annotationPropertyIRIAnnotatedList)*
+ 	;
+ 
+// individualFrame returns [$value]
+// 	:	INDIVIDUAL_LABEL  i=individual
+// 	(	ANNOTATIONS_LABEL  a=annotationAnnotatedList {\$value = new Erfurt_Owl_Structured_Axiom_AnnotationAxiom_AnnotationAssertion($i.value, $a.value);}
+// 		|	TYPES_LABEL  d=descriptionAnnotatedList {\$value = new Erfurt_Owl_Structured_Axiom_Assertion_ClassAssertion($i.value, $d.value);}
+// 		|	FACTS_LABEL  f=factAnnotatedList {\$value = new Erfurt_Owl_Structured_Axiom_Assertion_ObjectPropertyAssertion($i.value, $f.value);}
+// 		|	SAME_AS_LABEL  ial=individualAnnotatedList {\$value = new Erfurt_Owl_Structured_Axiom_Assertion_SameIndividual($i.value, $ial.value);}
+// 		|	DIFFERENET_FROM_LABEL ial1=individualAnnotatedList {\$value = new Erfurt_Owl_Structured_Axiom_Assertion_DifferentIndividuals($i.value, $ial.value);}
+// 	)*
+// 	;
 
 factAnnotatedList returns [$value]
-	:	annotations? fact (COMMA factAnnotatedList)*
-	;
+	:	annotations? fact (COMMA annotations? fact)*
+ 	;
 
 individualAnnotatedList returns [$value]
-	:	annotations? individual (COMMA individualAnnotatedList)*
-	;
-
+ 	:	annotations? individual (COMMA annotations? individual)*
+ 	;
+ 
 fact	:	NOT_LABEL? (objectPropertyFact | dataPropertyFact);
 
 objectPropertyFact
-	:	objectPropertyIRI individual
-	;
-
+ 	:	objectPropertyIRI individual
+ 	;
+ 
 dataPropertyFact
-	:	dataPropertyIRI literal
-	;
-
+ 	:	dataPropertyIRI literal
+ 	;
+ 
 datatypeFrame
-	:	DATATYPE_LABEL  dataType
-		(ANNOTATIONS_LABEL  annotationAnnotatedList)*
-		(EQUIVALENT_TO_LABEL  annotations dataRange)?
-		(ANNOTATIONS_LABEL  annotationAnnotatedList)*
-	;
-
-misc returns [$value]
-	:	EQUIVALENT_CLASSES_LABEL  annotations description2List
-	|	DISJOINT_CLASSES_LABEL  annotations description2List {\$value = new Erfurt_Owl_Structured_ClassAxiom_DisjointClasses($annotations.value, $description2List.value);}
-	|	EQUIVALENT_PROPERTIES_LABEL  annotations (objectProperty2List | dataProperty2List)
-	|	DISJOINT_PROPERTIES_LABEL  annotations (objectProperty2List | dataProperty2List)
-	|	SAME_INDIVIDUAL_LABEL  annotations individual2List
-	|	DIFFERENT_INDIVIDUALS_LABEL  annotations individual2List
-	;
+ 	:	DATATYPE_LABEL  dataType
+ 		(ANNOTATIONS_LABEL  annotationAnnotatedList)*
+ 		(EQUIVALENT_TO_LABEL  annotations dataRange)?
+ 		(ANNOTATIONS_LABEL  annotationAnnotatedList)*
+ 	;
+ 
+// misc returns [$value]
+// 	:	EQUIVALENT_CLASSES_LABEL  annotations description2List
+// 	|	DISJOINT_CLASSES_LABEL  annotations description2List {\$value = new Erfurt_Owl_Structured_ClassAxiom_DisjointClasses($annotations.value, $description2List.value);}
+// 	|	EQUIVALENT_PROPERTIES_LABEL  annotations (objectProperty2List | dataProperty2List)
+// 	|	DISJOINT_PROPERTIES_LABEL  annotations (objectProperty2List | dataProperty2List)
+// 	|	SAME_INDIVIDUAL_LABEL  annotations individual2List
+// 	|	DIFFERENT_INDIVIDUALS_LABEL  annotations individual2List
+// 	;
 	
 individual2List
 	:	individual COMMA individualList
 	;
 
 dataProperty2List
-	:	dataProperty COMMA dataPropertyList
-	;
-	
+ 	:	dataProperty COMMA dataPropertyList
+ 	;
+ 	
 dataPropertyList
 	:	dataProperty (COMMA dataProperty)*
-	;
-
+ 	;
+ 
 objectProperty2List
-	:	objectProperty COMMA objectPropertyList
-	;
-
+ 	:	objectProperty COMMA objectPropertyList
+ 	;
+ 
 objectPropertyList
-	:	objectProperty (COMMA objectProperty)*
-	;
-
-frame
-	: datatypeFrame
-	| classFrame
-	| objectPropertyFrame
-	| dataPropertyFrame
-	| annotationPropertyFrame
-	| individualFrame
-	| misc
-	;
+ 	:	objectProperty (COMMA objectProperty)*
+ 	;
+ 
+// frame
+// 	: datatypeFrame
+// 	| classFrame
+// 	| objectPropertyFrame
+// 	| dataPropertyFrame
+// 	| annotationPropertyFrame
+// 	| individualFrame
+// 	| misc
+// 	;
 
 entity
-	: DATATYPE_LABEL OPEN_BRACE dataType CLOSE_BRACE
-	| CLASS_LABEL OPEN_BRACE classIRI CLOSE_BRACE
-	| OBJECT_PROPERTY_LABEL OPEN_BRACE objectPropertyIRI CLOSE_BRACE
-	| DATA_PROPERTY_LABEL OPEN_BRACE datatypePropertyIRI CLOSE_BRACE
-	| ANNOTATION_PROPERTY_LABEL OPEN_BRACE annotationPropertyIRI CLOSE_BRACE
-	| NAMED_INDIVIDUAL_LABEL OPEN_BRACE individualIRI CLOSE_BRACE
-	;
-
-ontology
-	: ONTOLOGY_LABEL (ontologyIri (versionIri)?)? imports* annotations* frame*
-	;
+ 	: DATATYPE_LABEL OPEN_BRACE dataType CLOSE_BRACE
+ 	| CLASS_LABEL OPEN_BRACE classIRI CLOSE_BRACE
+ 	| OBJECT_PROPERTY_LABEL OPEN_BRACE objectPropertyIRI CLOSE_BRACE
+ 	| DATA_PROPERTY_LABEL OPEN_BRACE datatypePropertyIRI CLOSE_BRACE
+ 	| ANNOTATION_PROPERTY_LABEL OPEN_BRACE annotationPropertyIRI CLOSE_BRACE
+ 	| NAMED_INDIVIDUAL_LABEL OPEN_BRACE individualIRI CLOSE_BRACE
+ 	;
+ 
+// ontology
+// 	: ONTOLOGY_LABEL (ontologyIri (versionIri)?)? imports* annotations* frame*
+// 	;
 
 ontologyIri
 	: iri
