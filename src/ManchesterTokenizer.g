@@ -1,6 +1,6 @@
 lexer grammar ManchesterTokenizer;
 
-O_LABEL	: 'o';
+//O_LABEL	: 'o';
 F_LABEL : ( 'f' | 'F' ) ;
 LENGTH_LABEL : 'length' ;
 MIN_LENGTH_LABEL : 'minLength' ;
@@ -38,41 +38,41 @@ FLOAT_LABEL : 'float' ;
 INTEGER_LABEL : 'integer' ;
 STRING_LABEL : 'string' ;
 REFERENCE : '^^' ;
-RANGE_LABEL : 'Range:' ;
-CHARACTERISTICS_LABEL : 'Characteristics:' ;
-SUB_PROPERTY_OF_LABEL : 'SubPropertyOf:' ;
-SUB_PROPERTY_CHAIN_LABEL : 'SubPropertyChain:' ;
-OBJECT_PROPERTY_LABEL : 'ObjectProperty:' ;
-DATA_PROPERTY_LABEL : 'DataProperty:' ;
-ANNOTATION_PROPERTY_LABEL : 'AnnotaionProperty:' ;
-NAMED_INDIVIDUAL_LABEL : 'NamedIndividual' ;
-PREFIX_LABEL : 'Prefix:' ;
-ONTOLOGY_LABEL : 'Ontology:' ;
-INDIVIDUAL_LABEL : 'Individual:' ;
-TYPES_LABEL : 'Types:' ;
-FACTS_LABEL : 'Facts:' ;
-SAME_AS_LABEL : 'SameAs:' ;
-DIFFERENET_FROM_LABEL : 'DifferentFrom:' ;
-DATATYPE_LABEL : 'Datatype:' ;
-EQUIVALENT_CLASSES_LABEL : 'EquivalentClasses:' ;
-DISJOINT_CLASSES_LABEL : 'DisjointClasses:' ;
-EQUIVALENT_PROPERTIES_LABEL : 'EquivalentProperties:' ;
-DISJOINT_PROPERTIES_LABEL : 'DisjointProperties:' ;
-SAME_INDIVIDUAL_LABEL : 'SameIndividual:' ;
-DIFFERENT_INDIVIDUALS_LABEL : 'DifferentIndividuals:' ;
-EQUIVALENT_TO_LABEL : 'EquivalentTo:' ;
-SUBCLASS_OF_LABEL : 'SubClassOf:' ;
-DISJOINT_WITH_LABEL : 'DisjointWith:' ;
-DISJOINT_UNION_OF_LABEL : 'DisjointUnioniOf:' ;
-HAS_KEY_LABEL : 'HasKey:' ;
-INVERSE_OF_LABEL : 'InverseOf:' ;
-IMPORT_LABEL : 'Import:' ;
-ANNOTATIONS_LABEL : 'Annotations:' ;
-CLASS_LABEL : 'Class:' ;
+//RANGE_LABEL : 'Range:' ;
+//CHARACTERISTICS_LABEL : 'Characteristics:' ;
+//SUB_PROPERTY_OF_LABEL : 'SubPropertyOf:' ;
+//SUB_PROPERTY_CHAIN_LABEL : 'SubPropertyChain:' ;
+//OBJECT_PROPERTY_LABEL : 'ObjectProperty:' ;
+//DATA_PROPERTY_LABEL : 'DataProperty:' ;
+//ANNOTATION_PROPERTY_LABEL : 'AnnotaionProperty:' ;
+//NAMED_INDIVIDUAL_LABEL : 'NamedIndividual' ;
+//PREFIX_LABEL : 'Prefix:' ;
+//ONTOLOGY_LABEL : 'Ontology:' ;
+//INDIVIDUAL_LABEL : 'Individual:' ;
+//TYPES_LABEL : 'Types:' ;
+//FACTS_LABEL : 'Facts:' ;
+//SAME_AS_LABEL : 'SameAs:' ;
+//DIFFERENET_FROM_LABEL : 'DifferentFrom:' ;
+//DATATYPE_LABEL : 'Datatype:' ;
+//EQUIVALENT_CLASSES_LABEL : 'EquivalentClasses:' ;
+//DISJOINT_CLASSES_LABEL : 'DisjointClasses:' ;
+//EQUIVALENT_PROPERTIES_LABEL : 'EquivalentProperties:' ;
+//DISJOINT_PROPERTIES_LABEL : 'DisjointProperties:' ;
+//SAME_INDIVIDUAL_LABEL : 'SameIndividual:' ;
+//DIFFERENT_INDIVIDUALS_LABEL : 'DifferentIndividuals:' ;
+//EQUIVALENT_TO_LABEL : 'EquivalentTo:' ;
+//SUBCLASS_OF_LABEL : 'SubClassOf:' ;
+//DISJOINT_WITH_LABEL : 'DisjointWith:' ;
+//DISJOINT_UNION_OF_LABEL : 'DisjointUnioniOf:' ;
+//HAS_KEY_LABEL : 'HasKey:' ;
+//INVERSE_OF_LABEL : 'InverseOf:' ;
+//IMPORT_LABEL : 'Import:' ;
+//ANNOTATIONS_LABEL : 'Annotations:' ;
+//CLASS_LABEL : 'Class:' ;
 
 //TODO
 //fragment
-FUNCTIONAL_LABEL : 'Functional' ;	
+//FUNCTIONAL_LABEL : 'Functional' ;	
 //fragment
 //INVERSE_FUNCTIONAL_LABEL : 'InverseFunctional' ;
 //fragment
@@ -88,10 +88,10 @@ FUNCTIONAL_LABEL : 'Functional' ;
 //OBJECT_PROPERTY_CHARACTERISTIC : FUNCTIONAL_LABEL | INVERSE_FUNCTIONAL_LABEL | REFLEXIVE_LABEL | IRREFLEXIVE_LABEL | SYMMETRIC_LABEL | ASSYMETRIC_LABEL | TRANSITIVE_LABEL ;
 
 //test
-OBJECT_PROPERTY_CHARACTERISTIC : 'Functional' | 'InverseFunctional' | 'Reflexive' | 'Irreflexive' | 'Symmetric' ;
+//OBJECT_PROPERTY_CHARACTERISTIC : 'Functional' | 'InverseFunctional' | 'Reflexive' | 'Irreflexive' | 'Symmetric' ;
 //end test
 
-DOMAIN_LABEL : 'Domain:' ;
+//DOMAIN_LABEL : 'Domain:' ;
 fragment
 PN_PREFIX : (PN_CHARS)* ;
 fragment
