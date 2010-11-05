@@ -3,7 +3,7 @@ grammar Erfurt_Syntax_Manchester;
 options {
   language  = Php;
   backtrack = true;
-  memoize   = true;
+//  memoize   = true;
 }
 
 import ManchesterTokenizer;
