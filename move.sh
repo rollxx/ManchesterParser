@@ -1,6 +1,6 @@
 #!/bin/bash
 
-DEST=/Applications/MAMP/htdocs/myow/libraries/Erfurt/Erfurt/Syntax
+DEST=../ontowiki-erfurt/Erfurt/Syntax
 SOURCE=src
 
 cp $SOURCE/Erfurt_Syntax_ManchesterLexer.php $DEST/ManchesterLexer.php

@@ -301,8 +301,10 @@ dataConjunction returns [$value]
 //
 descriptionAnnotatedList returns [$value]
    :	//annotations? 
-description {\$value = $description.value;}
-//(COMMA annotations? description)*
+d1=description {\$value = $d1.value;}
+(COMMA 
+//annotations? 
+d2=description {\$value->addElement($d2.value);})*
    ;
 
 ////description2List returns [$value]
@@ -326,6 +328,7 @@ SUBCLASS_OF_LABEL s=descriptionAnnotatedList {\$value = new Erfurt_Owl_Structure
 //// 	//TODO owl2 primer error?
 //// 	(	HAS_KEY_LABEL annotations?
 //// 			(objectPropertyExpression | dataPropertyExpression)+)?
+EOF
   ;
 //// 
 //// objectPropertyFrame
