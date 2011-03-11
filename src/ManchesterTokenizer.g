@@ -61,14 +61,14 @@ REFERENCE : '^^' ;
 //SAME_INDIVIDUAL_LABEL : 'SameIndividual:' ;
 //DIFFERENT_INDIVIDUALS_LABEL : 'DifferentIndividuals:' ;
 //EQUIVALENT_TO_LABEL : 'EquivalentTo:' ;
-//SUBCLASS_OF_LABEL : 'SubClassOf:' ;
+SUBCLASS_OF_LABEL : 'SubClassOf:' ;
 //DISJOINT_WITH_LABEL : 'DisjointWith:' ;
 //DISJOINT_UNION_OF_LABEL : 'DisjointUnioniOf:' ;
 //HAS_KEY_LABEL : 'HasKey:' ;
 //INVERSE_OF_LABEL : 'InverseOf:' ;
 //IMPORT_LABEL : 'Import:' ;
 //ANNOTATIONS_LABEL : 'Annotations:' ;
-//CLASS_LABEL : 'Class:' ;
+CLASS_LABEL : 'Class:' ;
 
 //TODO
 //fragment

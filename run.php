@@ -9,7 +9,7 @@ set_include_path(get_include_path(). PATH_SEPARATOR . "/Applications/MAMP/htdocs
 
 // ini_set("memory_limit","24M");
 $time_start = microtime(true);
-require_once '/Users/roll/Documents/dropdocs/Dropbox/dropdocs/projects/tmp/svn/runtime/Php/antlr.php';
+require_once '/Users/roll/Dropbox/dropdocs/projects/tmp/svn/runtime/Php/antlr.php';
 require_once 'src/StrippedMosNewLexer.php';
 require_once 'src/StrippedMosNewParser.php';
 require_once 'src/StrippedMosNew_StrippedMosTokenizerNew.php';

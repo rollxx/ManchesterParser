@@ -299,10 +299,12 @@ dataConjunction returns [$value]
 //	: (ANNOTATIONS_LABEL a=annotationAnnotatedList {\$value = $a.value;})?
 //	;
 //
-//// descriptionAnnotatedList returns [$value]
-////  	:	annotations? description (COMMA annotations? description)*
-////  	;
-// 
+descriptionAnnotatedList returns [$value]
+   :	//annotations? 
+description {\$value = $description.value;}
+//(COMMA annotations? description)*
+   ;
+
 ////description2List returns [$value]
 //// 	:	d=description COMMA dl=descriptionList {\$value = new Erfurt_Owl_Structured_OwlList($d.value); \$value->addAllElements($dl.value);}
 //// 	;
@@ -311,18 +313,20 @@ dataConjunction returns [$value]
 // 	:	d1=description {\$value = new Erfurt_Owl_Structured_OwlList($d1.value);} (COMMA d2=description {\$value->addElement($d2.value);})*
 // 	;
 // 
-//// classFrame returns [$value]
-//// 	:	CLASS_LABEL c=classIRI
-//// 	(	ANNOTATIONS_LABEL annotationAnnotatedList
-//// 		|	SUBCLASS_OF_LABEL s=descriptionAnnotatedList {\$value = new Erfurt_Owl_Structured_ClassAxiom_SubClassOf($c.value, $s.value);}
+classFrame returns [$value]
+  :	CLASS_LABEL 
+c=classIRI
+  (	//ANNOTATIONS_LABEL annotationAnnotatedList
+    //|	
+SUBCLASS_OF_LABEL s=descriptionAnnotatedList {\$value = new Erfurt_Owl_Structured_ClassAxiom_SubClassOf($c.value, $s.value);}
 //// 		|	EQUIVALENT_TO_LABEL e=descriptionAnnotatedList {\$value = new Erfurt_Owl_Structured_ClassAxiom_EquivalentClasses($c.value, $e.value);}
 //// 		|	DISJOINT_WITH_LABEL d=descriptionAnnotatedList
 //// 		|	DISJOINT_UNION_OF_LABEL annotations description2List
-//// 	)*
+  )*
 //// 	//TODO owl2 primer error?
 //// 	(	HAS_KEY_LABEL annotations?
 //// 			(objectPropertyExpression | dataPropertyExpression)+)?
-//// 	;
+  ;
 //// 
 //// objectPropertyFrame
 //// 	:	OBJECT_PROPERTY_LABEL objectPropertyIRI
