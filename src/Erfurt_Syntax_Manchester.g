@@ -316,11 +316,15 @@ d2=description {\$value->addElement($d2.value);})*
 // 	;
 // 
 classFrame returns [$value]
+@init{\$value = null;}
   :	CLASS_LABEL 
 c=classIRI
   (	//ANNOTATIONS_LABEL annotationAnnotatedList
     //|	
-SUBCLASS_OF_LABEL s=descriptionAnnotatedList {\$value = new Erfurt_Owl_Structured_ClassAxiom_SubClassOf($c.value, $s.value);}
+SUBCLASS_OF_LABEL s=descriptionAnnotatedList {
+if(!\$value) \$value = new Erfurt_Owl_Structured_ClassAxiom_SubClassOf($c.value, $s.value);
+else \$value->addElement($s.value);
+}
 //// 		|	EQUIVALENT_TO_LABEL e=descriptionAnnotatedList {\$value = new Erfurt_Owl_Structured_ClassAxiom_EquivalentClasses($c.value, $e.value);}
 //// 		|	DISJOINT_WITH_LABEL d=descriptionAnnotatedList
 //// 		|	DISJOINT_UNION_OF_LABEL annotations description2List
